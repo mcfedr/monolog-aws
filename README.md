@@ -2,6 +2,10 @@
 
 These handlers make it easy to send logs via amazon services
 
+[![Latest Stable Version](https://poser.pugx.org/mcfedr/monolog-aws/v/stable.png)](https://packagist.org/packages/mcfedr/monolog-aws)
+[![License](https://poser.pugx.org/mcfedr/monolog-aws/license.png)](https://packagist.org/packages/mcfedr/monolog-aws)
+[![Build Status](https://travis-ci.org/mcfedr/monolog-aws.svg?branch=master)](https://travis-ci.org/mcfedr/monolog-aws)
+
 ## Usage
 
 ### Amazon SES

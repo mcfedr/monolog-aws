@@ -5,7 +5,7 @@
 
 namespace Mcfedr\Monolog\Handler;
 
-use Aws\Ses\SesClient;
+use Aws\Ses\Exception\SesException;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 
@@ -16,10 +16,13 @@ class SesHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSesHandler()
     {
+        $sesMock = $this->getMock('Aws\Ses\SesClient', ['sendEmail'], [], '', false);
+
+        $sesMock->expects($this->once())
+            ->method('sendEmail');
+
         $logger = new Logger('test', [
-            new SesHandler("test@example.com", "test", "test@example.com", SesClient::factory([
-                'region' => 'eu-west-1'
-            ]))
+            new SesHandler("test@example.com", "test", "test@example.com", $sesMock)
         ]);
         $logger->error('The error');
     }
@@ -29,12 +32,15 @@ class SesHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSesWithLoggerHandler()
     {
+        $sesMock = $this->getMock('Aws\Ses\SesClient', ['sendEmail'], [], '', false);
+
+        $sesMock->expects($this->once())
+            ->method('sendEmail')
+            ->will($this->throwException(new SesException()));
+
         $testHandler = new TestHandler();
         $handlerLogger = new Logger('handler-logger', [$testHandler]);
-
-        $handler = new SesHandler("test@example.com", "test", "test@example.com", SesClient::factory([
-            'region' => 'eu-west-1'
-        ]));
+        $handler = new SesHandler("test@example.com", "test", "test@example.com", $sesMock);
         $handler->setLogger($handlerLogger);
         $logger = new Logger('test', [$handler]);
         $logger->error('The error');

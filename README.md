@@ -18,5 +18,6 @@ If you use a region other than US_EAST you will need to do setRegion on the Hand
 
 ## Tests
 
-To run the tests you must setup the `~/.aws/credentials` file as described in
-the [documentation](http://docs.aws.amazon.com/aws-sdk-php/guide/latest/credentials.html#credential-profiles)
+To run the tests
+
+    ./vendor/.bin/phpunit

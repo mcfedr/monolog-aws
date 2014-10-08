@@ -5,7 +5,7 @@
 
 namespace Mcfedr\Monolog\Handler;
 
-use Aws\Sns\SnsClient;
+use Aws\Sns\Exception\SnsException;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 
@@ -16,10 +16,13 @@ class SnsHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSnsHandler()
     {
+        $snsMock = $this->getMock('Aws\Sns\SnsClient', ['publish'], [], '', false);
+
+        $snsMock->expects($this->once())
+            ->method('publish');
+
         $logger = new Logger('test', [
-            new SnsHandler("arn::test", "test", SnsClient::factory([
-                'region' => 'eu-west-1'
-            ]))
+            new SnsHandler("arn::test", "test", $snsMock)
         ]);
         $logger->error('The error');
     }
@@ -29,12 +32,16 @@ class SnsHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSnsWithLoggerHandler()
     {
+        $snsMock = $this->getMock('Aws\Sns\SnsClient', ['publish'], [], '', false);
+
+        $snsMock->expects($this->once())
+            ->method('publish')
+            ->will($this->throwException(new SnsException()));
+
         $testHandler = new TestHandler();
         $handlerLogger = new Logger('handler-logger', [$testHandler]);
 
-        $handler = new SnsHandler("arn::test", "test", SnsClient::factory([
-            'region' => 'eu-west-1'
-        ]));
+        $handler = new SnsHandler("arn::test", "test", $snsMock);
         $handler->setLogger($handlerLogger);
         $logger = new Logger('test', [$handler]);
         $logger->error('The error');

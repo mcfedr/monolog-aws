@@ -19,5 +19,8 @@
     },
     "autoload": {
         "psr-4": {"Mcfedr\\Monolog\\": "src/Mcfedr/Monolog"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Mcfedr\\Monolog\\": "src/Mcfedr/Monolog"}
     }
 }

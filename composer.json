@@ -4,7 +4,7 @@
     "keywords": ["log", "monolog", "amazon", "aws", "sns", "ses"],
     "require": {
         "aws/aws-sdk-php": "~2.0",
-        "monolog/monolog": "~1.0"
+        "monolog/monolog": "~1.13"
     },
     "license": "MIT",
     "authors": [

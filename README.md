@@ -5,6 +5,7 @@ These handlers make it easy to send logs via amazon services
 [![Latest Stable Version](https://poser.pugx.org/mcfedr/monolog-aws/v/stable.png)](https://packagist.org/packages/mcfedr/monolog-aws)
 [![License](https://poser.pugx.org/mcfedr/monolog-aws/license.png)](https://packagist.org/packages/mcfedr/monolog-aws)
 [![Build Status](https://travis-ci.org/mcfedr/monolog-aws.svg?branch=master)](https://travis-ci.org/mcfedr/monolog-aws)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/5ca235c9-e3d3-43a0-aa33-d63f23775133/mini.png)](https://insight.sensiolabs.com/projects/5ca235c9-e3d3-43a0-aa33-d63f23775133)
 
 ## Usage
 

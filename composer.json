@@ -3,7 +3,7 @@
     "description": "A monolog handler to send logs to SNS or SES",
     "keywords": ["log", "monolog", "amazon", "aws", "sns", "ses"],
     "require": {
-        "aws/aws-sdk-php": "~2.0",
+        "aws/aws-sdk-php": "~3.0",
         "monolog/monolog": "~1.13"
     },
     "license": "MIT",

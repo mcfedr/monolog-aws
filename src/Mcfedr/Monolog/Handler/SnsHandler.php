@@ -80,7 +80,7 @@ class SnsHandler extends AbstractProcessingHandler
             $this->sns->publish(
                 [
                     'TopicArn' => $this->topicArn,
-                    'Message' => mb_strcut($this->getFormatter()->format($record), 0, 262144),
+                    'Message' => mb_strcut($record['formatted'], 0, 262144),
                     'Subject' => $this->subject
                 ]
             );

@@ -5,6 +5,7 @@
 
 namespace Mcfedr\Monolog\Handler;
 
+use Aws\Command;
 use Aws\Sns\Exception\SnsException;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -36,7 +37,7 @@ class SnsHandlerTest extends \PHPUnit_Framework_TestCase
 
         $snsMock->expects($this->once())
             ->method('publish')
-            ->will($this->throwException($this->getMockBuilder('Aws\Sns\Exception\SnsException')->disableOriginalConstructor()->getMock()));
+            ->will($this->throwException(new SnsException('Error', new Command('Command'))));
 
         $testHandler = new TestHandler();
         $handlerLogger = new Logger('handler-logger', [$testHandler]);

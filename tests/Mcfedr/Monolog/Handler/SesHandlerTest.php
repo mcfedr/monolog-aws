@@ -5,7 +5,6 @@
 
 namespace Mcfedr\Monolog\Handler;
 
-use Aws\Ses\Exception\SesException;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 
@@ -36,7 +35,7 @@ class SesHandlerTest extends \PHPUnit_Framework_TestCase
 
         $sesMock->expects($this->once())
             ->method('sendEmail')
-            ->will($this->throwException(new SesException()));
+            ->will($this->throwException($this->getMockBuilder('Aws\Ses\Exception\SesException')->disableOriginalConstructor()->getMock()));
 
         $testHandler = new TestHandler();
         $handlerLogger = new Logger('handler-logger', [$testHandler]);

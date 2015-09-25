@@ -36,7 +36,7 @@ class SnsHandlerTest extends \PHPUnit_Framework_TestCase
 
         $snsMock->expects($this->once())
             ->method('publish')
-            ->will($this->throwException(new SnsException()));
+            ->will($this->throwException($this->getMockBuilder('Aws\Sns\Exception\SnsException')->disableOriginalConstructor()->getMock()));
 
         $testHandler = new TestHandler();
         $handlerLogger = new Logger('handler-logger', [$testHandler]);

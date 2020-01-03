@@ -1,51 +1,68 @@
 <?php
+
+declare(strict_types=1);
 /**
- * Created by mcfedr on 07/10/14 20:44
+ * Created by mcfedr on 07/10/14 20:44.
  */
 
 namespace Mcfedr\Monolog\Handler;
 
 use Aws\Command;
 use Aws\Ses\Exception\SesException;
+use Aws\Ses\SesClient;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 
-class SesHandlerTest extends \PHPUnit_Framework_TestCase
+/**
+ * @internal
+ */
+final class SesHandlerTest extends TestCase
 {
     /**
-     * This tests that no exceptions come out
+     * This tests that no exceptions come out.
      */
-    public function testSesHandler()
+    public function testSesHandler(): void
     {
-        $sesMock = $this->getMock('Aws\Ses\SesClient', ['sendEmail'], [], '', false);
+        $sesMock = $this->getMockBuilder(SesClient::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['sendEmail'])
+            ->getMock()
+        ;
 
-        $sesMock->expects($this->once())
-            ->method('sendEmail');
+        $sesMock->expects(static::once())
+            ->method('sendEmail')
+        ;
 
         $logger = new Logger('test', [
-            new SesHandler("test@example.com", "test", "test@example.com", $sesMock)
+            new SesHandler('test@example.com', 'test', 'test@example.com', $sesMock),
         ]);
         $logger->error('The error');
     }
 
     /**
-     * This tests that the handler pushes out exceptions
+     * This tests that the handler pushes out exceptions.
      */
-    public function testSesWithLoggerHandler()
+    public function testSesWithLoggerHandler(): void
     {
-        $sesMock = $this->getMock('Aws\Ses\SesClient', ['sendEmail'], [], '', false);
+        $sesMock = $this->getMockBuilder(SesClient::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['sendEmail'])
+            ->getMock()
+        ;
 
-        $sesMock->expects($this->once())
+        $sesMock->expects(static::once())
             ->method('sendEmail')
-            ->will($this->throwException(new SesException('Error', new Command('Command'))));
+            ->will(static::throwException(new SesException('Error', new Command('Command'))))
+        ;
 
         $testHandler = new TestHandler();
         $handlerLogger = new Logger('handler-logger', [$testHandler]);
-        $handler = new SesHandler("test@example.com", "test", "test@example.com", $sesMock);
+        $handler = new SesHandler('test@example.com', 'test', 'test@example.com', $sesMock);
         $handler->setLogger($handlerLogger);
         $logger = new Logger('test', [$handler]);
         $logger->error('The error');
 
-        $this->assertTrue($testHandler->hasErrorRecords());
+        static::assertTrue($testHandler->hasErrorRecords());
     }
 }

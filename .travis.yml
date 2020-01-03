@@ -1,11 +1,21 @@
 language: php
+
+dist: trusty
+sudo: false
+
 php:
-    - 5.6
-    - 5.5
-    - hhvm
-    - 7
+  - '7.2'
+  - '7.3'
+  - '7.4'
+
+env:
+  - MONOLOG_VERSION='^1.13'
+  - MONOLOG_VERSION='^2'
 
 before_script:
-    - composer selfupdate
-    - composer install --prefer-source
-script: ./vendor/bin/phpunit
+  - composer update
+  - composer require monolog/monolog:$MONOLOG_VERSION
+
+script:
+  - ./vendor/bin/php-cs-fixer fix --dry-run --diff
+  - ./vendor/bin/phpunit
